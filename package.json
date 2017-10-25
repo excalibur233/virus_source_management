@@ -27,5 +27,10 @@
     "pug": "^2.0.0-rc.4",
     "qiniu": "^7.1.0",
     "sequelize": "^4.17.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.9.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.7.0"
   }
 }
