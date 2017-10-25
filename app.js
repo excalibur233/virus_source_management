@@ -7,6 +7,6 @@ const app = require('./config/express')();
 
 models.sequelize.sync().then(() => {
   app.listen(config.serverConfig.serverPort, () => {
-    console.log(`Server running at ${config.serverConfig.serverHost}:${config.serverPort}`);
+    console.log(`Server running at ${config.serverConfig.serverHost}:${config.serverConfig.serverPort}`);
   });
 });

@@ -2,7 +2,7 @@ module.exports = {
   // server config
   serverConfig: {
     // development configuration options
-    serverPort: 3000,
+    serverPort: 9000,
     // serverHost: 'http://118.31.16.48',
     serverHost: 'http://localhost',
     // session secret key

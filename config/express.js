@@ -5,6 +5,8 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const session = require('express-session');
+const logUtil = require('../app/utils/log.util');
+
 
 // local require
 const config = require('./config');
@@ -15,6 +17,9 @@ module.exports = function () {
   // view engine setup.
   app.set('views', path.join(__dirname, '../app/views'));
   app.set('view engine', 'pug');
+
+  // use log4js
+  app.use(logUtil.getLog4Js().connectLogger(logUtil.getLogger('normal'), { level: 'INFO', format: ':method :url' }));
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
