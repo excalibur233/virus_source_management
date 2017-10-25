@@ -1,0 +1,19 @@
+{
+  "name": "virus_source_management",
+  "version": "1.0.0",
+  "description": "managent\u001b[D\u001b[Dment for virus source",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/excalibur233/virus_source_management.git"
+  },
+  "author": "xuming.js",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/excalibur233/virus_source_management/issues"
+  },
+  "homepage": "https://github.com/excalibur233/virus_source_management#readme"
+}
