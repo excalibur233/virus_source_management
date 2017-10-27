@@ -3,8 +3,8 @@ const log4js = require('log4js');
 log4js.configure({
   appenders: {
     console: { type: 'console' }, // 控制台输出
-    infoLogger: { type: 'file', filename: `${__dirname}/logs/info.log` },
-    errLogger: { type: 'file', filename: `${__dirname}/logs/err.log` },
+    infoLogger: { type: 'file', filename: '../../logs/info.log' },
+    errLogger: { type: 'file', filename: '../../logs/err.log' },
   },
   categories: {
     errLogger: { appenders: ['errLogger'], level: 'error' },

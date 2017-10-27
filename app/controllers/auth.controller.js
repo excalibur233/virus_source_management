@@ -1,13 +1,15 @@
 const url = require('url');
 const config = require('../../config/config');
+const constants = require('../../config/constants');
 const HttpUtil = require('../utils/http.util');
 const qiniu = require('qiniu');
 const md5 = require('crypto').createHash('md5');
 const Model = require('../models/index');
+const logger = require('../utils/log.util').getLogger('infoLogger');
 
 // 中间件：判断是否已经登录
 exports.isLogin = (req, res, next) => {
-  const managerInfo = req.session.manager || {};
+  const manager = req.session.manager || {};
 
   // 记载用户的起始url，方便登录/注册后跳转
   const originalUrl = url.format({
@@ -18,29 +20,23 @@ exports.isLogin = (req, res, next) => {
 
   req.session.originalUrl = originalUrl;
 
-  // if (!managerInfo || !managerInfo.managerId) {
-  //   res.redirect(`${config.serverConfig.serverHost}:${config.serverConfig.serverPort}`);
-  // } else {
-  //   next();
-  // }
-
-  req.session.manager = {
-    managerId: 1,
-    account: 'root',
-    type: 1,
-  };
+  if (!manager || !manager.managerId) {
+    res.redirect(`${config.serverConfig.serverHost}:${config.serverConfig.serverPort}`);
+  } else {
+    next();
+  }
 };
 
 // 中间件：判断是否属于超级管理员 目前只有超级管理员可以添加后台账号
 exports.isSuperManager = (req, res, next) => {
-  const managerInfo = req.session.managerInfo || {};
+  const manager = req.session.manager || {};
 
-  if (!managerInfo || !managerInfo.managerId) {
+  if (!manager || !manager.managerId) {
     res.redirect(`${config.serverConfig.serverHost}:${config.serverConfig.serverPort}`);
     return;
   }
 
-  if (parseInt(managerInfo.type, 0) !== 1) {
+  if (parseInt(manager.type, 0) !== 1) {
     const err = new Error('抱歉，只有超级管理员有此权限');
     next(err);
     return;
@@ -61,14 +57,14 @@ exports.login = (req, res) => {
   const httpUtil = new HttpUtil(req, res);
 
   if (!password || !account) {
-    httpUtil.sendJson(500, '参数不能为空');
+    httpUtil.sendJson(constants.HTTP_FAIL, '参数不能为空');
     return;
   }
 
   password = md5.update(password).digest('hex');
   Model.Manager.findOne({ where: { account } }).then((managerInfo) => {
     if (!managerInfo.dataValues || password !== managerInfo.dataValues.password) {
-      httpUtil.sendJson(500, '账户或者密码错误');
+      httpUtil.sendJson(constants.HTTP_FAIL, '账户或者密码错误');
       return;
     }
 
@@ -80,8 +76,8 @@ exports.login = (req, res) => {
 
     res.redirect(`${config.serverConfig.serverHost}:${config.serverConfig.serverPort}/index`);
   }).catch((err) => {
-    console.log(err);
-    httpUtil.sendJson(500, '系统错误');
+    logger.info(err);
+    httpUtil.sendJson(constants.HTTP_FAIL, '系统错误');
   });
 };
 
@@ -93,20 +89,20 @@ exports.register = (req, res) => {
   const httpUtil = new HttpUtil(req, res);
 
   if (!password || !account) {
-    httpUtil.sendJson(500, '参数不能为空');
+    httpUtil.sendJson(constants.HTTP_FAIL, '参数不能为空');
     return;
   }
 
   password = md5.update(password).digest('hex');
   Model.Manager.create({ account, password, type }).then((managerInfo) => {
     if (!managerInfo.dataValues) {
-      httpUtil.sendJson(500, '账户注册失败');
+      httpUtil.sendJson(constants.HTTP_FAIL, '账户注册失败');
       return;
     }
-    httpUtil.sendJson(200, '账户注册成功');
+    httpUtil.sendJson(constants.HTTP_SUCCESS, '账户注册成功');
   }).catch((err) => {
-    console.log(err);
-    httpUtil.sendJson(500, '系统错误');
+    logger.info(err);
+    httpUtil.sendJson(constants.HTTP_FAIL, '系统错误');
   });
 };
 
