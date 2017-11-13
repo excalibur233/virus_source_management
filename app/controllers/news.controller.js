@@ -117,7 +117,7 @@ exports.qryNewsDetails = (req, res, next) => {
   mainFunction();
 };
 
-// 查询自测题的详细信息
+// 查询自测题目的详细信息
 exports.qryTestDetails = (req, res, next) => {
   const newsId = req.params.testId || 0;
 
@@ -172,7 +172,7 @@ exports.editNews = (req, res) => {
   const newsId = req.body.newsId || 0;
   const httpUtil = new HttpUtil(req, res);
 
-  if (!newsClass || !type || !title || !writerName || !introduction || !context || !imgUrl) {
+  if (!newsClass || !title || !writerName || !introduction || !context || !imgUrl || !type) {
     httpUtil.sendJson(constants.HTTP_FAIL, '参数错误');
     return;
   }
@@ -190,7 +190,18 @@ exports.editNews = (req, res) => {
           context,
         }, { where: { newsId } });
         if (affectedRow === 1) {
-          httpUtil.sendJson(constants.HTTP_SUCCESS, '更新成功');
+          httpUtil.sendJson(constants.HTTP_SUCCESS, '更新成功', {
+            newsInfo: {
+              newsId,
+              writerName,
+              type,
+              newsClass,
+              title,
+              introduction,
+              imgUrl,
+              context,
+            },
+          });
         } else {
           httpUtil.sendJson(constants.HTTP_FAIL, '更新失败');
         }
@@ -205,7 +216,7 @@ exports.editNews = (req, res) => {
           context,
         });
         if (newsInfo.dataValues && newsInfo.dataValues.newsId) {
-          httpUtil.sendJson(constants.HTTP_SUCCESS, '新增成功');
+          httpUtil.sendJson(constants.HTTP_SUCCESS, '新增成功', { newsInfo: newsInfo.dataValues });
         } else {
           httpUtil.sendJson(constants.HTTP_FAIL, '新增失败');
         }
@@ -219,8 +230,72 @@ exports.editNews = (req, res) => {
 };
 
 // 编辑/新增自测题
-exports.editTests = (req, res, next) => {
-  res.render('index');
+exports.editTests = (req, res) => {
+  const newsId = req.body.newsId || 0;
+  const testId = req.body.testId || 0;
+  const question = req.body.question || '';
+  const order = req.body.order || '';
+  const imgUrl = req.body.imgUrl || '';
+  const options = req.body.options || '';
+  const scores = req.body.scores || '';
+  const type = req.body.type || 0;
+  const httpUtil = new HttpUtil(req, res);
+
+  if (!newsId || !question || !order || !imgUrl || !options || !scores || !type) {
+    httpUtil.sendJson(constants.HTTP_FAIL, '参数错误');
+    return;
+  }
+
+  const mainFunction = async () => {
+    try {
+      // 新增/编辑自测题
+      if (testId) {
+        const affectedRow = await Model.SelfTest.update({
+          order,
+          type,
+          imgUrl,
+          question,
+          options,
+          scores,
+        }, { where: { testId, newsId } });
+        if (affectedRow !== 1) {
+          httpUtil.sendJson(constants.HTTP_FAIL, '更新失败');
+        } else {
+          httpUtil.sendJson(constants.HTTP_SUCCESS, '新增成功', {
+            testInfo: {
+              order,
+              type,
+              imgUrl,
+              question,
+              options,
+              scores,
+              testId,
+              newsId,
+            },
+          });
+        }
+      } else {
+        const selfTestInfo = await Model.SelfTest.create({
+          newsId,
+          order,
+          type,
+          imgUrl,
+          question,
+          options,
+          scores,
+        });
+        if (!selfTestInfo.dataValues || !selfTestInfo.dataValues.testId) {
+          httpUtil.sendJson(constants.HTTP_FAIL, '新增失败');
+        } else {
+          httpUtil.sendJson(constants.HTTP_SUCCESS, '新增成功', { testInfo: selfTestInfo.dataValues });
+        }
+      }
+    } catch (err) {
+      logger.info(err);
+      httpUtil.sendJson(constants.HTTP_FAIL, '系统错误');
+    }
+  };
+  mainFunction();
 };
 
 // 删除新闻

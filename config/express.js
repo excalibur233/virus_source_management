@@ -29,7 +29,7 @@ module.exports = function () {
     resave: true,
     secret: config.serverConfig.sessionSecret,
   }));
-  app.use(csurf({ cookie: true }));
+  // app.use(csurf({ cookie: true }));
 
   // always last, but before user middleware.
   app.use(express.static(path.join(__dirname, '../public/')));
