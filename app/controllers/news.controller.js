@@ -192,6 +192,11 @@ exports.editNews = (req, res) => {
           context,
         }, { where: { newsId } });
         if (affectedRow === 1) {
+          await redisClient.hsetAsync(
+            redisUtil.getRedisPrefix(11),
+            newsId,
+            JSON.stringify({ name: title, cat: newsClass }),
+          );
           httpUtil.sendJson(constants.HTTP_SUCCESS, '更新成功', {
             newsInfo: {
               newsId,
@@ -220,12 +225,19 @@ exports.editNews = (req, res) => {
         if (newsInfo.dataValues && newsInfo.dataValues.newsId) {
           // 加入热门排行榜和热门分类排行榜
           // 按照加入的时间顺序排序
+          // 加入资讯缩略信息，供排行榜等显示的时候查询
           const timestamp = `0.${new Date().getTime()}`;
           const rankKey = redisUtil.getRedisPrefix(2);
           const rankTypeKey = redisUtil.getRedisPrefix(2, type);
+          const briefKey = redisUtil.getRedisPrefix(11);
           await redisClient.multi()
             .zadd(rankKey, timestamp, newsInfo.dataValues.newsId)
             .zadd(rankTypeKey, timestamp, newsInfo.dataValues.newsId)
+            .hset(
+              briefKey,
+              newsInfo.dataValues.newsId,
+              JSON.stringify({ name: newsInfo.title, cat: newsInfo.newsClass }),
+            )
             .execAsync();
 
           httpUtil.sendJson(constants.HTTP_SUCCESS, '新增成功', { newsInfo: newsInfo.dataValues });
