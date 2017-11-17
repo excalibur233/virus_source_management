@@ -70,11 +70,13 @@ exports.login = (req, res) => {
 
     req.session.manager = {
       managerId: managerInfo.dataValues.managerId,
-      account,
+      account:managerInfo.dataValues.account,
       type: managerInfo.dataValues.type,
     };
 
-    res.redirect(`${config.serverConfig.serverHost}:${config.serverConfig.serverPort}/index`);
+    httpUtil.sendJson(constants.HTTP_SUCCESS, '登入成功','/index');
+    return;
+    //res.redirect(`${config.serverConfig.serverHost}:${config.serverConfig.serverPort}/index`);
   }).catch((err) => {
     logger.info(err);
     httpUtil.sendJson(constants.HTTP_FAIL, '系统错误');
