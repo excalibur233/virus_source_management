@@ -1,4 +1,7 @@
 const constants = {
+  // redis_data前缀
+  REDIS_PREFIX: 'med',
+
   // api const
   HTTP_FAIL: 500,
   HTTP_SUCCESS: 200,

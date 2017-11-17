@@ -1,20 +1,26 @@
 module.exports = {
   // server config
   serverConfig: {
-    // development configuration options
-    serverPort: 9000,
-    // serverHost: 'http://118.31.16.48',
-    serverHost: 'http://localhost',
-    // session secret key
+    serverPort: 8080,
+    serverHost: 'http://share.medsci-tech.com',
     sessionSecret: 'xsm_production_secret',
   },
   // mysql config
   mysqlConfig: {
-    host: '127.0.0.1',
+    host: 'rm-2ze62b8v9ox9m35k7.mysql.rds.aliyuncs.com',
     port: 3306,
-    database: 'virus_source_app',
-    username: 'root',
-    password: 'root',
+    database: 't_virus_source',
+    username: 't_virus_source',
+    password: 'test_123',
+  },
+  // redis config
+  redisConfig: {
+    host: 'r-2zebafe77a6fd114.redis.rds.aliyuncs.com',
+    port: '6379',
+    db: 1,
+    password: 'xuLU5900',
+    ttl: 1800,
+    logErrors: true,
   },
   // qiniu config
   qiNiuConfig: {

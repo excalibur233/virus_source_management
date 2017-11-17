@@ -1,11 +1,8 @@
 module.exports = {
   // server config
   serverConfig: {
-    // development configuration options
-    serverPort: 9000,
-    // serverHost: 'http://118.31.16.48',
+    serverPort: 8086,
     serverHost: 'http://localhost',
-    // session secret key
     sessionSecret: 'xsm_development_secret',
   },
   // mysql config
@@ -15,6 +12,15 @@ module.exports = {
     database: 'virus_source_app',
     username: 'root',
     password: 'root',
+  },
+  // redis config
+  redisConfig: {
+    host: '127.0.0.1',
+    port: '6379',
+    db: 1,
+    password: 'root',
+    ttl: 1800,
+    logErrors: true,
   },
   // qiniu config
   qiNiuConfig: {
