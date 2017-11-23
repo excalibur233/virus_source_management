@@ -1,7 +1,7 @@
 module.exports = {
   // server config
   serverConfig: {
-    serverPort: 8080,
+    serverPort: 8081,
     serverHost: 'http://share.medsci-tech.com',
     sessionSecret: 'xsm_production_secret',
   },
