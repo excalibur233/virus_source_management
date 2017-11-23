@@ -80,7 +80,7 @@ exports.login = (req, res) => {
     //res.redirect(`${config.serverConfig.serverHost}:${config.serverConfig.serverPort}/index`);
   }).catch((err) => {
     //logger.info(err);
-    console.log(err);
+    //console.log(err);
     httpUtil.sendJson(constants.HTTP_FAIL, '系统错误');
     return ;
   });

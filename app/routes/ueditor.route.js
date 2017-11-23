@@ -6,7 +6,7 @@ router.post('/ue',function (req, res, next) {
     // ueditor 客户发起上传图片请求  
     if (req.query.action === 'uploadimage') {  
         var foo = req.ueditor;  
-  		console.log(foo);
+  		//console.log(foo);
         var imgname = req.ueditor.filename;  
   
         var img_url = '/images/ueditor/';  

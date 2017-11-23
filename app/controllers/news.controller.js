@@ -23,7 +23,7 @@ const qryNewsList = async (page = 1, limit = constants.NEWS_PAGE_LIMIT, conditio
       where:{}
     };
 
-    console.log(condition);
+    //console.log(condition);
 
     if (condition.newsClass) {
       conditions.where.newsClass = condition.newsClass;
@@ -59,22 +59,26 @@ exports.index = (req, res, next) => {
       //console.log(req.query);
       const page = req.query.page || 1;
       const type = req.query.type || 0;
+      const newsClass = req.query.newsClass || 0;
       const keywords = req.query.keywords || '';
       const condition = {};
       if(type){
         condition.type = type;
+      }
+      if(newsClass){
+        condition.newsClass = newsClass;
       }
       if(keywords){
         condition.keywords = keywords;
       }
       var datas = await qryNewsList(page,constants.NEWS_PAGE_LIMIT,condition);
       datas.titles = '文章列表';
-      console.log(datas);
+      //console.log(datas);
       res.render('news/index', datas);
       //res.render('newsIndex');
     } catch (err) {
       logger.info(err);
-      console.log(err);
+      //console.log(err);
       next(err);
     }
   };
@@ -133,7 +137,7 @@ exports.edit = (req, res, next) => {
   const mainFunction = async () => {
     try {
       const newsInfo = await Model.News.findOne({ 'where': {'newsId': newsId } });
-      console.log(newsInfo.dataValues);
+      //console.log(newsInfo.dataValues);
       if (!newsInfo.dataValues) {
         throw new Error('文章不存在！');
       }
@@ -329,7 +333,7 @@ exports.delNews = (req, res) => {
         if (type === 1) {
           // 普通资讯文章
           const affectedRows = await Model.News.destroy({ where: {newsId:newsId} });
-          console.log(affectedRows);
+          //console.log(affectedRows);
           if (affectedRows > 0) {
             const resData = await redisClient.multi()
               .zrem(rankKey, newsId)
@@ -372,7 +376,7 @@ exports.delNews = (req, res) => {
     } catch (err) {
       httpUtil.sendJson(constants.HTTP_FAIL, '系统错误');
       logger.info(err);
-      console.log(err);
+      //console.log(err);
     }
   };
   mainFunction();

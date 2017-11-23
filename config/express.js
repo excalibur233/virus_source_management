@@ -58,7 +58,7 @@ module.exports = function () {
     }  */
     else if (req.query.action === 'uploadvideo'){
         var foo = req.ueditor.file;  //文件内容
-        console.log(foo);
+        //console.log(foo);
         var file_path = '/videos/ueditor/' +Date.now() + req.ueditor.filename;
     }
     // 客户端发起其它请求  
@@ -96,7 +96,7 @@ module.exports = function () {
   // eslint-disable-next-line no-unused-vars.
   app.use((err, req, res, next) => {
     res.status(err.status || 500);
-    console.log(err);
+    //console.log(err);
     res.render('500', { error: err.toString() });
   });
 

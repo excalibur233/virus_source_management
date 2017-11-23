@@ -17,9 +17,17 @@ block content
 			label.layui-form-label 资讯类型*：
 			.layui-input-block.layui-col-md6
 				select(name="type",lay-verify="required")
-					option(value="") 请选择类型
-					option(value="1", selected= type === 1) 自测题
-					option(value="2", selected= type === 2) 文章
+					//-option(value="") 请选择类型
+					option(value="1", selected= type === 1) 文章
+					option(value="2", selected= type === 2) 自测题
+		.layui-form-item.layui-row
+			label.layui-form-label 文章分类*：
+			.layui-input-block.layui-col-md6
+				select(name="newsClass",lay-verify="required")
+					option(value="") 请选择分类
+					option(value="1", selected= newsClass === 1) 痛风
+					option(value="2", selected= newsClass === 2) 糖尿病
+					option(value="3", selected= newsClass === 3) 甲状腺
 		.layui-form-item.layui-row
 			label.layui-form-label 封面图*：
 			.layui-input-block.layui-col-md6
