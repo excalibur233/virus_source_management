@@ -1,0 +1,55 @@
+doctype html
+html
+	head
+		meta(charset="utf-8")
+		title #{titles}
+		link(rel="stylesheet",href="/layui/css/layui.css",media="all")
+		link(rel="stylesheet",href="/build/css/app.css",media="all")
+	body
+		.layui-layout.layui-layout-admin.kit-layout-admin
+			.layui-header
+				.layui-logo 迈德分享
+				ul.layui-nav.layui-layout-right.kit-nav
+					li.layui-nav-item
+						a(href='')
+							img.layui-nav-img(src="/images/face.jpg")
+						//
+							dl.layui-nav-child
+								dd
+									a(href='') 基本资料
+					li.layui-nav-item
+						a(href="")
+							i.fa.fa-sign-out(aria-hidden="true")
+							|注销
+			.layui-side.layui-bg-black.kit-side
+				.layui-side-scroll
+					.kit-side-fold
+						i.fa.fa-navicon(aria-hidden="true")
+					ul.layui-nav.layui-nav-tree(lay-filter="kitNavbar" kit-navbar)
+						li.layui-nav-item.layui-nav-itemed
+							a(href="/index")
+								i.fa.fa-plug(aria-hidden="true")
+								span 首页
+						li.layui-nav-item
+							a(href="/news")
+								i.fa.fa-plug(aria-hidden="true")
+								span 文章
+			.layui-body
+				block content
+			script(src="/layui/layui.js",type="text/javascript")
+			script(type="text/javascript").
+				var message;
+				layui.config({
+				    base: '/build/js/'
+				}).use(['app', 'message'], function() {
+				    var app = layui.app,
+				        $ = layui.jquery,
+				        layer = layui.layer;
+				    //将message设置为全局以便子页面调用
+				    message = layui.message;
+				    //主入口
+				    app.set({
+				        type: 'iframe'
+				    }).init();
+				});
+			block script

@@ -1,7 +1,7 @@
 const redis = require('redis');
 const bluebird = require('bluebird');
 const config = require('./config');
-const logger = require('../utils/log.util').getLogger('errLogger');
+const logger = require('../app/utils/log.util').getLogger('errLogger');
 
 // 目前: 管理后台至操作1库，其他的库不要使用了
 // 客户端session记录在0库

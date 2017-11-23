@@ -3,7 +3,7 @@ const config = require('../../config/config');
 const constants = require('../../config/constants');
 const HttpUtil = require('../utils/http.util');
 const qiniu = require('qiniu');
-const md5 = require('crypto').createHash('md5');
+const crypto = require('crypto');
 const Model = require('../models/index');
 const logger = require('../utils/log.util').getLogger('infoLogger');
 
@@ -61,7 +61,8 @@ exports.login = (req, res) => {
     return;
   }
 
-  password = md5.update(password).digest('hex');
+  password = crypto.createHash('md5').update(password).digest('hex');
+  //console.log(password);
   Model.Manager.findOne({ where: { account } }).then((managerInfo) => {
     if (!managerInfo.dataValues || password !== managerInfo.dataValues.password) {
       httpUtil.sendJson(constants.HTTP_FAIL, '账户或者密码错误');
@@ -78,8 +79,10 @@ exports.login = (req, res) => {
     return;
     //res.redirect(`${config.serverConfig.serverHost}:${config.serverConfig.serverPort}/index`);
   }).catch((err) => {
-    logger.info(err);
+    //logger.info(err);
+    console.log(err);
     httpUtil.sendJson(constants.HTTP_FAIL, '系统错误');
+    return ;
   });
 };
 
@@ -113,10 +116,11 @@ exports.getQiNiuToken = (req, res) => {
   const mac = new qiniu.auth.digest.Mac(config.qiNiuConfig.accessKey, config.qiNiuConfig.secretKey);
   const options = {
     scope: config.qiNiuConfig.bucket,
-    returnBody: `{"key":"$(key)"$(key)","hash":"$(etag)","state":"SUCCESS","url":"${config.qiNiuConfig.showLink}/$(key)","title":"$(key)","original":"$(key)"}`,
+    returnBody: `{"key":"$(key)","hash":"$(etag)","state":"SUCCESS","url":"${config.qiNiuConfig.showLink}/$(key)","title":"$(key)","original":"$(key)"}`,
   };
   const putPolicy = new qiniu.rs.PutPolicy(options);
   const uploadToken = putPolicy.uploadToken(mac);
+  //console.log(req.body);
   res.end(uploadToken);
 };
 
