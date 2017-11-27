@@ -166,7 +166,7 @@ exports.saveData = (req, res) => {
   const newsId = req.body.newsId || 0;
   const httpUtil = new HttpUtil(req, res);
 
-  if (!newsClass || !title || !writerName || !introduction || undefined===context || !imgUrl || !type) {
+  if (!newsClass || !title || !writerName || !introduction || !context || !imgUrl || !type) {
     httpUtil.sendJson(constants.HTTP_FAIL, '参数错误');
     return;
   }

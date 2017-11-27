@@ -39,7 +39,7 @@ block content
 		.layui-form-item.layui-row
 			label.layui-form-label 简介*：
 			.layui-input-block.layui-col-md6
-				textarea.layui-textarea(name="introduction",placeholder="请填写文章简介",autocomplete="off",lay-verify="required",value=introduction)
+				textarea.layui-textarea(name="introduction",placeholder="请填写文章简介",autocomplete="off",lay-verify="required")=introduction
 		.layui-form-item.layui-row
 			label.layui-form-label 内容*：
 			.layui-input-block.layui-col-md10
@@ -51,7 +51,7 @@ block content
 				a.layui-btn.layui-btn-primary(id="goBack" href="javascript:history.back(-1)") 返回
 block script
 	script(type="text/javascript",charset="utf-8",src="/ueditor/ueditor.config.js")
-	script(type="text/javascript",charset="utf-8",src="/ueditor/ueditor.all.min.js")
+	script(type="text/javascript",charset="utf-8",src="/ueditor/ueditor.all.js")
 	script(type="text/javascript",charset="utf-8",src="/ueditor/lang/zh-cn/zh-cn.js")
 	script(type="text/javascript").
 		//实例化ueitor
@@ -69,7 +69,7 @@ block script
 					return false;
 				}
 				if(!fields.context){
-					//console.log(fields.context);
+					console.log(fields.context);
 					layer.alert('请填写文章内容',{'title':'提示信息'});
 					return false;
 				}

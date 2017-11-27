@@ -7238,7 +7238,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
             }
             me.fireEvent('beforegetcontent');
             var root = UE.htmlparser(me.body.innerHTML,ignoreBlank);
-            me.filterOutputRule(root);
+            //me.filterOutputRule(root);
             me.fireEvent('aftergetcontent', cmd,root);
             return  root.toHtml(formatter);
         },
@@ -9386,7 +9386,7 @@ var htmlparser = UE.htmlparser = function (htmlstr,ignoreBlank) {
 
     //ie下取得的html可能会有\n存在，要去掉，在处理replace(/[\t\r\n]*/g,'');代码高量的\n不能去除
     var allowEmptyTags = {
-        b:1,code:1,i:1,u:1,strike:1,s:1,tt:1,strong:1,q:1,samp:1,em:1,span:1,
+        b:1,code:1,i:1,u:1,strike:1,s:1,tt:1,strong:1,q:1,samp:1,em:1,span:1,video:1,source:1,
         sub:1,img:1,sup:1,font:1,big:1,small:1,iframe:1,a:1,br:1,pre:1
     };
     htmlstr = htmlstr.replace(new RegExp(domUtils.fillChar, 'g'), '');
@@ -9417,7 +9417,8 @@ var htmlparser = UE.htmlparser = function (htmlstr,ignoreBlank) {
             'li':['ul', 'ol'],
             'dt':'dl',
             'dd':'dl',
-            'option':'select'
+            'option':'select',
+            'source':'video'
         },
         needChild = {
             'ol':'li',
@@ -17665,8 +17666,8 @@ UE.plugins['video'] = function (){
                 var ext = url.substr(url.lastIndexOf('.') + 1);
                 if(ext == 'ogv') ext = 'ogg';
                 str = '<video' + (id ? ' id="' + id + '"' : '') + ' class="' + classname + ' video-js" ' + (align ? ' style="float:' + align + '"': '') +
-                    ' controls preload="none" width="' + width + '" height="' + height + '" src="' + url + '" data-setup="{}">' +
-                    '<source src="' + url + '" type="video/' + ext + '" /></video>';
+                    ' controls preload="aoto" width="' + width + '" height="' + height + '" src="' + url + '" data-setup="{}">' +
+                    '<source src="' + url + '" type="video/' + ext + '" />Your browser does not support the video tag.</video>';
                 break;
         }
         return str;

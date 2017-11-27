@@ -24,10 +24,10 @@ module.exports = {
   },
   // qiniu config
   qiNiuConfig: {
-    accessKey: 'mrFUPeTjAbXn6eYl-K8ydEUW4EBV10Rc4DojZXbA',
-    secretKey: '0q9mSTZgKQtfQEZuILfiK44LXuvrYkdpACkTFEoY',
+    accessKey: 'unt5w-mSHycfoT9XPuonMFj49mu1XOcEs4pBO4vg',
+    secretKey: '1Leh1VrCAXFutyg4hzSZ2vSPyNTeESrexYdc1S-H',
     upHost: 'qiniu.zone.Zone_z0',
-    bucket: 'wyg569983202',
-    showLink: 'http://oybluf8g8.bkt.clouddn.com',
+    bucket: 'med-share',
+    showLink: 'http://p025heou9.bkt.clouddn.com',
   },
 };
