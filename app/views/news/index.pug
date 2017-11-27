@@ -4,31 +4,61 @@ block content
 	.layui-collapse(style="margin:15px 0")
 		.layui-colla-item
 			.layui-colla-title 筛选
-			.layui-colla-content
-				fieldset.layui-elem-field.layui-field-title(style="margin-top:15px")
-					legend 筛选条件
-				form.layui-form.layui-form-pane
-					.layui-form-item
-						label.layui-form-label 文章类型
-						.layui-input-inline
-							select(name="type")
-								option(value="") 请选择文章类型
-								option(value="1", selected= (con.type===1) ) 文章
-								option(value="2", selected= (con.type===2) ) 自测题
-					.layui-form-item
-						label.layui-form-label 文章分类
-						.layui-input-inline
-							select(name="newsClass")
-								option(value="") 请选择文章分类
-								option(value="1", selected= (con.newsClass===1) ) 痛风
-								option(value="2", selected= (con.newsClass===2) ) 糖尿病
-								option(value="3", selected= (con.newsClass===3) ) 甲状腺
+			-if (con.type || con.newsClass)
+				div.layui-colla-content.layui-show
+					fieldset.layui-elem-field.layui-field-title(style="margin-top:15px")
+						legend 筛选条件
+					form.layui-form.layui-form-pane
+						.layui-form-item
+							label.layui-form-label 文章类型
+							.layui-input-inline
+								select(name="type")
+									option(value="") 请选择文章类型
+									option(value="1", selected= con.type==1 ) 文章
+									option(value="2", selected= con.type==2 ) 自测题
+						.layui-form-item
+							label.layui-form-label 文章分类
+							.layui-input-inline
+								select(name="newsClass")
+									option(value="") 请选择文章分类
+									option(value="1", selected= (con.newsClass==1) ) 痛风
+									option(value="2", selected= (con.newsClass==2) ) 糖尿病
+									option(value="3", selected= (con.newsClass==3) ) 甲状腺
 
-					.layui-form-item
-						label.layui-form-label 关键词
-						.layui-input-block
-							input.layui-input(type="text",placeholder="请输入搜索关键词",name="keywords",value=con.keywords)
-					button.layui-btn.layui-btn-normal 点击搜索
+						.layui-form-item
+							label.layui-form-label 关键词
+							.layui-input-block
+								input.layui-input(type="text",placeholder="请输入搜索关键词",name="keywords",value=con.keywords)
+						button.layui-btn.layui-btn-normal 点击搜索
+						button.layui-btn.layui-btn-primary(type="reset") 重置
+			-else
+				div.layui-colla-content
+			
+					fieldset.layui-elem-field.layui-field-title(style="margin-top:15px")
+						legend 筛选条件
+					form.layui-form.layui-form-pane
+						.layui-form-item
+							label.layui-form-label 文章类型
+							.layui-input-inline
+								select(name="type")
+									option(value="") 请选择文章类型
+									option(value="1") 文章
+									option(value="2") 自测题
+						.layui-form-item
+							label.layui-form-label 文章分类
+							.layui-input-inline
+								select(name="newsClass")
+									option(value="") 请选择文章分类
+									option(value="1") 痛风
+									option(value="2") 糖尿病
+									option(value="3") 甲状腺
+
+						.layui-form-item
+							label.layui-form-label 关键词
+							.layui-input-block
+								input.layui-input(type="text",placeholder="请输入搜索关键词",name="keywords")
+						button.layui-btn.layui-btn-normal 点击搜索
+						button.layui-btn.layui-btn-primary(type="reset") 重置
 
 	a.layui-btn(href="/news/add") 添加
 	table.layui-table
@@ -51,12 +81,12 @@ block content
 					td #{data.newsId}
 					td #{data.title}
 					td #{data.writerName}
-					td !{data.type ===2?'<span class="layui-btn layui-bg-cyan">自测题</span>':'<span class="layui-btn layui-bg-orange">文章</span>'}
-					td !{data.newsClass ===1?'<span class="layui-btn layui-bg-red">痛风</span>':(data.newsClass ===2?'<span class="layui-btn layui-bg-black">糖尿病</span>':'<span class="layui-btn layui-bg-blue">甲状腺</span>')}
+					td !{data.type ===2?'<span class="layui-btn layui-btn-sm layui-bg-cyan">自测题</span>':'<span class="layui-btn layui-btn-sm layui-bg-orange">文章</span>'}
+					td !{data.newsClass ===1?'<span class="layui-btn layui-btn-sm layui-bg-red">痛风</span>':(data.newsClass ===2?'<span class="layui-btn layui-btn-sm layui-bg-black">糖尿病</span>':'<span class="layui-btn layui-btn-sm layui-bg-blue">甲状腺</span>')}
 
 					td #{moment(data.createdAt).format('YYYY-MM-DD HH:mm:ss')}
 					td
-						a.layui-btn.layui-btn-normal(href="/news/edit/"+data.newsId)
+						a.layui-btn.layui-btn-sm.layui-btn-normal(href="/news/edit/"+data.newsId)
 							i.layui-icon &#xe642;
 							|编辑
 						a.layui-btn.layui-btn-danger(href="/news/del/"+data.newsId,id="delNews")
@@ -111,10 +141,15 @@ block script
 					,skip: true //开启跳页
 					,jump: function(obj, first){
 						if(!first){
-							//- var params = '';
-							//- if(con.type) params += '&type='+con.type;
-							//- if(con.keywords) params += '&keywords='+con.keywords;
-							location.href = '?page='+obj.curr ;
+							var params = '';
+							var type = "#{con.type}",
+							newsClass = "#{con.newsClass}",
+							keywords = "#{con.keywords}";
+							if(type) params += '&type='+ type;
+							if(newsClass) params += '&type='+ newsClass;
+							if(keywords) params += '&keywords='+ keywords;
+							//console.log(obj);
+							location.href = '?page='+obj.curr + params;
 							//layer.msg('第'+ obj.curr +'页');
 						}
 					}

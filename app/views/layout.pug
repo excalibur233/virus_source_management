@@ -18,7 +18,7 @@ html
 								dd
 									a(href='') 基本资料
 					li.layui-nav-item
-						a(href="")
+						a(href="/auth/logout")
 							i.fa.fa-sign-out(aria-hidden="true")
 							|注销
 			.layui-side.layui-bg-black.kit-side
@@ -26,13 +26,13 @@ html
 					.kit-side-fold
 						i.fa.fa-navicon(aria-hidden="true")
 					ul.layui-nav.layui-nav-tree(lay-filter="kitNavbar" kit-navbar)
-						li.layui-nav-item.layui-nav-itemed
-							a(href="/index")
-								i.fa.fa-plug(aria-hidden="true")
-								span 首页
+						//- li.layui-nav-item.layui-nav-itemed
+						//- 	a(href="/index")
+						//- 		i.layui-icon &#xe68e; 
+						//- 		span 首页
 						li.layui-nav-item
 							a(href="/news")
-								i.fa.fa-plug(aria-hidden="true")
+								i.layui-icon &#xe705; 
 								span 文章
 			.layui-body
 				block content

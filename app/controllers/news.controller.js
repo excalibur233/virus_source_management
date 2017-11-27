@@ -71,7 +71,7 @@ exports.index = (req, res, next) => {
       if(keywords){
         condition.keywords = keywords;
       }
-      var datas = await qryNewsList(page,constants.NEWS_PAGE_LIMIT,condition);
+      var datas = await qryNewsList(page,5/*constants.NEWS_PAGE_LIMIT*/,condition);
       datas.titles = '文章列表';
       //console.log(datas);
       res.render('news/index', datas);
@@ -123,7 +123,7 @@ exports.findNewsList = (req, res) => {
 
 //添加文章页面
 exports.add = (req,res)=>{
-  res.render('news/edit',{});
+  res.render('news/edit',{titles:'添加文章'});
 }
 
 // 查询文章的详细信息
@@ -141,6 +141,7 @@ exports.edit = (req, res, next) => {
       if (!newsInfo.dataValues) {
         throw new Error('文章不存在！');
       }
+      newsInfo.dataValues.titles = '编辑文章'
       res.render('news/edit', newsInfo.dataValues);
     } catch (err) {
       logger.info(err);
@@ -165,7 +166,7 @@ exports.saveData = (req, res) => {
   const newsId = req.body.newsId || 0;
   const httpUtil = new HttpUtil(req, res);
 
-  if (!newsClass || !title || !writerName || !introduction || !context || !imgUrl || !type) {
+  if (!newsClass || !title || !writerName || !introduction || undefined===context || !imgUrl || !type) {
     httpUtil.sendJson(constants.HTTP_FAIL, '参数错误');
     return;
   }

@@ -17,7 +17,7 @@ module.exports = function () {
 
   // view engine setup.
   app.set('views', path.join(__dirname, '../app/views'));
-  app.set('view options', {debug:true});
+  //app.set('view options', {debug:true});
   app.set('view engine', 'pug');
 
   // use log4js

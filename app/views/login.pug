@@ -21,7 +21,7 @@ html
 	script(type="text/javascript").
 		$(function(){
 			$('#dosubmit').click(function(e){
-			e.preventDefault();
+				e.preventDefault();
 				var data = $('form').serialize();
 				$.ajax({
 					type:'post',
@@ -29,11 +29,11 @@ html
 					data:data,
 					success:function(res){
 						var resJson = JSON.parse(res);
-						console.log(resJson);
+						//console.log(resJson);
 						if(resJson.errCode != 200){
 							$('p.error').html(resJson.reason);
 						}else{
-							location.href = '/index';
+							location.href = resJson.params;
 						}
 					}
 				})

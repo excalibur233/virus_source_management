@@ -75,7 +75,7 @@ exports.login = (req, res) => {
       type: managerInfo.dataValues.type,
     };
 
-    httpUtil.sendJson(constants.HTTP_SUCCESS, '登入成功','/index');
+    httpUtil.sendJson(constants.HTTP_SUCCESS, '登入成功','/news');
     return;
     //res.redirect(`${config.serverConfig.serverHost}:${config.serverConfig.serverPort}/index`);
   }).catch((err) => {
@@ -86,6 +86,10 @@ exports.login = (req, res) => {
   });
 };
 
+exports.logout = (req,res)=>{
+  req.session.manager = {};
+  res.redirect('/');
+}
 // 请求注册
 exports.register = (req, res) => {
   const account = req.body.account || '';

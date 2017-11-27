@@ -7340,9 +7340,9 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
             var me = this;
 
             me.fireEvent('beforesetcontent', html);
-            // var root = UE.htmlparser(html);
+             var root = UE.htmlparser(html);
             // me.filterInputRule(root);
-            // html = root.toHtml();
+             html = root.toHtml();
 
             me.body.innerHTML = (isAppendTo ? me.body.innerHTML : '') + html;
 
@@ -7926,7 +7926,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
         getContentLength: function (ingoneHtml, tagNames) {
             var count = this.getContent(false,false,true).length;
             if (ingoneHtml) {
-                tagNames = (tagNames || []).concat([ 'hr', 'img', 'iframe']);
+                tagNames = (tagNames || []).concat([ 'hr', 'img','video','iframe']);
                 count = this.getContentTxt().replace(/[\t\r\n]+/g, '').length;
                 for (var i = 0, ci; ci = tagNames[i++];) {
                     count += this.document.getElementsByTagName(ci).length;
@@ -17763,15 +17763,15 @@ UE.plugins['video'] = function (){
         execCommand: function (cmd, videoObjs, type){
             videoObjs = utils.isArray(videoObjs)?videoObjs:[videoObjs];
             var html = [],id = 'tmpVedio', cl;
-            for(var i=0,vi,len = videoObjs.length;i<len;i++){
+            for(let i=0,vi,len = videoObjs.length;i<len;i++){
                 vi = videoObjs[i];
                 cl = (type == 'upload' ? 'edui-upload-video video-js vjs-default-skin':'edui-faked-video');
                 html.push(creatInsertStr( vi.url, vi.width || 420,  vi.height || 280, id + i, null, cl, 'video'));
             }
             me.execCommand("inserthtml",html.join(""),true);
             var rng = this.selection.getRange();
-            for(var i= 0,len=videoObjs.length;i<len;i++){
-                var img = this.document.getElementById('tmpVedio'+i);
+            for(let i= 0,len=videoObjs.length;i<len;i++){
+                let img = this.document.getElementById('tmpVedio'+i);
                 domUtils.removeAttributes(img,'id');
                 rng.selectNode(img).select();
                 me.execCommand('imagefloat',videoObjs[i].align)
