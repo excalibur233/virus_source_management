@@ -25,15 +25,15 @@ html
 				.layui-side-scroll
 					.kit-side-fold
 						i.fa.fa-navicon(aria-hidden="true")
-					ul.layui-nav.layui-nav-tree(lay-filter="kitNavbar" kit-navbar)
-						//- li.layui-nav-item.layui-nav-itemed
-						//- 	a(href="/index")
-						//- 		i.layui-icon &#xe68e; 
-						//- 		span 首页
-						li.layui-nav-item
+					ul#navbar.layui-nav.layui-nav-tree(lay-filter="kitNavbar" kit-navbar)
+						li#bar1.layui-nav-item
 							a(href="/news")
 								i.layui-icon &#xe705; 
 								span 文章
+						li#bar2.layui-nav-item.layui-nav-itemed
+							a(href="/index")
+								i.layui-icon &#xe735; 
+								span 积分设置
 			.layui-body
 				block content
 			script(src="/layui/layui.js",type="text/javascript")
@@ -51,5 +51,12 @@ html
 				    app.set({
 				        type: 'iframe'
 				    }).init();
+				    //console.log(location.href.indexOf('news'));
+				    //$('#navbar li').removeClass('layui-nav-item-active');
+				    if(location.href.indexOf('news') !== -1){				    	
+				    	$('#bar1').addClass('layui-nav-item-active');
+				    }else{
+						$('#bar2').addClass('layui-nav-item-active');
+				    }
 				});
 			block script

@@ -17764,15 +17764,15 @@ UE.plugins['video'] = function (){
         execCommand: function (cmd, videoObjs, type){
             videoObjs = utils.isArray(videoObjs)?videoObjs:[videoObjs];
             var html = [],id = 'tmpVedio', cl;
-            for(let i=0,vi,len = videoObjs.length;i<len;i++){
+            for(var i=0,vi,len = videoObjs.length;i<len;i++){
                 vi = videoObjs[i];
                 cl = (type == 'upload' ? 'edui-upload-video video-js vjs-default-skin':'edui-faked-video');
                 html.push(creatInsertStr( vi.url, vi.width || 420,  vi.height || 280, id + i, null, cl, 'video'));
             }
             me.execCommand("inserthtml",html.join(""),true);
             var rng = this.selection.getRange();
-            for(let i= 0,len=videoObjs.length;i<len;i++){
-                let img = this.document.getElementById('tmpVedio'+i);
+            for(var i= 0,len=videoObjs.length;i<len;i++){
+                var img = this.document.getElementById('tmpVedio'+i);
                 domUtils.removeAttributes(img,'id');
                 rng.selectNode(img).select();
                 me.execCommand('imagefloat',videoObjs[i].align)

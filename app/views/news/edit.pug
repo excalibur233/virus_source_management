@@ -51,12 +51,11 @@ block content
 				a.layui-btn.layui-btn-primary(id="goBack" href="javascript:history.back(-1)") 返回
 block script
 	script(type="text/javascript",charset="utf-8",src="/ueditor/ueditor.config.js")
-	script(type="text/javascript",charset="utf-8",src="/ueditor/ueditor.all.js")
+	script(type="text/javascript",charset="utf-8",src="/ueditor/ueditor.all.min.js")
 	script(type="text/javascript",charset="utf-8",src="/ueditor/lang/zh-cn/zh-cn.js")
 	script(type="text/javascript").
 		//实例化ueitor
 		var ue = UE.getEditor('editor');
-
 		//Demo
 		layui.use('form', function(){
 		  var form = layui.form;
