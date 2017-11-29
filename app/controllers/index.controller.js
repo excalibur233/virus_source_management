@@ -8,7 +8,7 @@ exports.index = (req, res, next) => {
 		try{
 			const bonusList = await Model.BonusPoint.findAll();
 			//bonusList.titles = '积分设置';
-			console.log(bonusList);
+			//console.log(bonusList);
 			res.render('index',{data:bonusList,titles:'积分设置'});
 		}catch(err){
 			console.log(err);
