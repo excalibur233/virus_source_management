@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 const router = require('express').Router();
 const indexController = require('../controllers/index.controller');
 const authController = require('../controllers/auth.controller');

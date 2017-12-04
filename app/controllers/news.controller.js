@@ -11,19 +11,19 @@ const qryNewsList = async (page = 1, limit = constants.NEWS_PAGE_LIMIT, conditio
     totalPage: 1,
     currentPage: page,
     limit,
-    con:condition
+    con: condition,
   };
 
   try {
-    var conditions = {
-      attributes: ['newsId', 'writerName', 'type', 'newsClass', 'title', 'introduction','createdAt'],
+    const conditions = {
+      attributes: ['newsId', 'writerName', 'type', 'newsClass', 'title', 'introduction', 'createdAt'],
       offset: (page - 1) * limit,
       limit,
-      order: [['createdAt','DESC']],
-      where:{}
+      order: [['createdAt', 'DESC']],
+      where: {},
     };
 
-    //console.log(condition);
+    // console.log(condition);
 
     if (condition.newsClass) {
       conditions.where.newsClass = condition.newsClass;
@@ -32,14 +32,14 @@ const qryNewsList = async (page = 1, limit = constants.NEWS_PAGE_LIMIT, conditio
       conditions.where.type = condition.type;
     }
     if (condition.keywords) {
-      conditions.where.$or = { title:{$like: `%${condition.keywords}%` },writerName:{$like: `%${condition.keywords}%`}};
+      conditions.where.$or = { title: { $like: `%${condition.keywords}%` }, writerName: { $like: `%${condition.keywords}%` } };
     }
-    
-    //console.log(conditions);
+
+    // console.log(conditions);
     const newsList = await Model.News.findAndCountAll(conditions);
-    
+
     const totalPage = newsList.count;
-    if (/*!newsList.dataValues || */totalPage === 0) {
+    if (/*! newsList.dataValues || */totalPage === 0) {
       return rtnList;
     }
 
@@ -56,29 +56,29 @@ const qryNewsList = async (page = 1, limit = constants.NEWS_PAGE_LIMIT, conditio
 exports.index = (req, res, next) => {
   const mainFunction = async () => {
     try {
-      //console.log(req.query);
+      // console.log(req.query);
       const page = req.query.page || 1;
       const type = req.query.type || 0;
       const newsClass = req.query.newsClass || 0;
       const keywords = req.query.keywords || '';
       const condition = {};
-      if(type){
+      if (type) {
         condition.type = type;
       }
-      if(newsClass){
+      if (newsClass) {
         condition.newsClass = newsClass;
       }
-      if(keywords){
+      if (keywords) {
         condition.keywords = keywords;
       }
-      var datas = await qryNewsList(page,5/*constants.NEWS_PAGE_LIMIT*/,condition);
+      const datas = await qryNewsList(page, 5/* constants.NEWS_PAGE_LIMIT */, condition);
       datas.titles = '文章列表';
-      //console.log(datas);
+      // console.log(datas);
       res.render('news/index', datas);
-      //res.render('newsIndex');
+      // res.render('newsIndex');
     } catch (err) {
       logger.info(err);
-      //console.log(err);
+      // console.log(err);
       next(err);
     }
   };
@@ -121,27 +121,27 @@ exports.findNewsList = (req, res) => {
   mainFunction();
 };
 
-//添加文章页面
-exports.add = (req,res)=>{
-  res.render('news/edit',{titles:'添加文章'});
-}
+// 添加文章页面
+exports.add = (req, res) => {
+  res.render('news/edit', { titles: '添加文章' });
+};
 
 // 查询文章的详细信息
 exports.edit = (req, res, next) => {
   const newsId = req.params.newsId || 0;
 
-  if(!newsId){
-    res.render('news/edit',{});
-    return ;
+  if (!newsId) {
+    res.render('news/edit', {});
+    return;
   }
   const mainFunction = async () => {
     try {
-      const newsInfo = await Model.News.findOne({ 'where': {'newsId': newsId } });
-      //console.log(newsInfo.dataValues);
+      const newsInfo = await Model.News.findOne({ where: { newsId } });
+      // console.log(newsInfo.dataValues);
       if (!newsInfo.dataValues) {
         throw new Error('文章不存在！');
       }
-      newsInfo.dataValues.titles = '编辑文章'
+      newsInfo.dataValues.titles = '编辑文章';
       res.render('news/edit', newsInfo.dataValues);
     } catch (err) {
       logger.info(err);
@@ -154,7 +154,7 @@ exports.edit = (req, res, next) => {
 
 // 编辑/新增新闻
 exports.saveData = (req, res) => {
-  //console.log(req.body);
+  // console.log(req.body);
   const newsClass = req.body.newsClass || 0;
   const type = req.body.type || 0;
   const title = req.body.title || '';
@@ -233,7 +233,7 @@ exports.saveData = (req, res) => {
             )
             .execAsync();
 
-          httpUtil.sendJson(constants.HTTP_SUCCESS, '新增成功','/news');
+          httpUtil.sendJson(constants.HTTP_SUCCESS, '新增成功', '/news');
         } else {
           httpUtil.sendJson(constants.HTTP_FAIL, '新增失败');
         }
@@ -322,8 +322,8 @@ exports.delNews = (req, res) => {
 
   const mainFunction = async () => {
     try {
-      const newsInfo = await Model.News.findOne({ where: { newsId:newsId } });
-      //console.log(newsInfo);
+      const newsInfo = await Model.News.findOne({ where: { newsId } });
+      // console.log(newsInfo);
       if (newsInfo && newsInfo.dataValues) {
         const type = parseInt(newsInfo.dataValues.type, 0);
 
@@ -333,8 +333,8 @@ exports.delNews = (req, res) => {
 
         if (type === 1) {
           // 普通资讯文章
-          const affectedRows = await Model.News.destroy({ where: {newsId:newsId} });
-          //console.log(affectedRows);
+          const affectedRows = await Model.News.destroy({ where: { newsId } });
+          // console.log(affectedRows);
           if (affectedRows > 0) {
             const resData = await redisClient.multi()
               .zrem(rankKey, newsId)
@@ -351,9 +351,8 @@ exports.delNews = (req, res) => {
           }
         } else {
           // 自测题 cascade delete
-          //Model.sequelize.transaction(async (transaction) => {
-          const affectedRows = await Model.News.destroy({ where: {newsId:newsId} }/*, { transaction }*/);
-            //await Model.SelfTest.destroy({ where: newsId }, { transaction });
+          const affectedRows = await Model.News.destroy({ where: { newsId } });
+          // await Model.SelfTest.destroy({ where: newsId }, { transaction });
           if (affectedRows > 0) {
             const result = await redisClient.multi()
               .zrem(rankKey, newsId)
@@ -368,8 +367,8 @@ exports.delNews = (req, res) => {
           } else {
             // Rolled back
             httpUtil.sendJson(constants.HTTP_FAIL, '删除失败');
-            logger.info(err);
-          };
+            // logger.info(err);
+          }
         }
       } else {
         httpUtil.sendJson(constants.HTTP_SUCCESS, '该文章不存在！');
@@ -377,7 +376,7 @@ exports.delNews = (req, res) => {
     } catch (err) {
       httpUtil.sendJson(constants.HTTP_FAIL, '系统错误');
       logger.info(err);
-      //console.log(err);
+      // console.log(err);
     }
   };
   mainFunction();
