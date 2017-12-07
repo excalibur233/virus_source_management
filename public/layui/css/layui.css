@@ -1353,9 +1353,13 @@ a cite {
 
 .layui-form-item .layui-inline {
     margin-bottom: 5px;
-    margin-right: 10px
+    margin-right: 10px;
+    /*margin-left: 20px*/
 }
-
+.option-model{
+    float:left;
+    width: 80%;
+}
 .layui-input-block,
 .layui-input-inline {
     position: relative

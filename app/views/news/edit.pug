@@ -2,7 +2,6 @@ extends ../layout
 block content
 	blockquote.layui-elem-quote #{newsId?'编辑':'添加'}
 	form.layui-form(action="/news/save")
-		input(type="hidden" name="newsClass" value="1")
 		if newsId
 			input(type="hidden" name="newsId" value=newsId)
 		.layui-form-item.layui-row
@@ -23,7 +22,7 @@ block content
 		.layui-form-item.layui-row
 			label.layui-form-label 文章分类*：
 			.layui-input-block.layui-col-md6
-				select(name="newsClass",lay-verify="required")
+				select(name="newsClass",lay-verify="required",lay-filter="newClass")
 					option(value="") 请选择分类
 					option(value="1", selected= newsClass === 1) 痛风
 					option(value="2", selected= newsClass === 2) 糖尿病
@@ -40,7 +39,7 @@ block content
 		.layui-form-item.layui-row
 			label.layui-form-label 简介*：
 			.layui-input-block.layui-col-md6
-				textarea.layui-textarea(name="introduction",placeholder="请填写文章简介",autocomplete="off",lay-verify="required")=introduction
+				textarea.layui-textarea(name="introduction",placeholder="请填写文章简介",autocomplete="off")=introduction
 		.layui-form-item.layui-row
 			label.layui-form-label 内容*：
 			.layui-input-block.layui-col-md10
@@ -59,20 +58,31 @@ block script
 		var ue = UE.getEditor('editor');
 		//Demo
 		layui.use('form', function(){
-		  var form = layui.form;
-		  var $ = layui.jquery;
+			var form = layui.form;
+			var $ = layui.jquery;
 			//监听提交
+			form.on('select(newClass)', function(data){
+				// console.log(data.value);
+				var change_type = $('select[name="type"]');
+				if(data.value == 4){
+					$('select[name="type"] option[value="2"]').attr('selected',true);
+					change_type.next().find('dd').eq(1).click();
+				}else{
+					$('select[name="type"] option[value="1"]').attr('selected', true);
+					change_type.next().find('dd').eq(0).click();
+				};
+			});
 			form.on('submit(formSmt)', function(data){
 				var fields = data.field;
-				if(fields.imgUrl==''){
-					layer.alert('请上传封面图',{'title':'提示信息'});
-					return false;
-				}
-				if(!fields.context){
-					console.log(fields.context);
-					layer.alert('请填写文章内容',{'title':'提示信息'});
-					return false;
-				}
+				// if(fields.imgUrl==''){
+				// 	layer.alert('请上传封面图',{'title':'提示信息'});
+				// 	return false;
+				// }
+				// if(!fields.context){
+				// 	console.log(fields.context);
+				// 	layer.alert('请填写文章内容',{'title':'提示信息'});
+				// 	return false;
+				// }
 				var index = layer.load(1);
 				$.ajax({
 					type:'post'
@@ -81,7 +91,7 @@ block script
 					,success:function(data){
 						var res = JSON.parse(data);
 						//-console.log(res);
-						layer.close(index);    
+						layer.close(index);
 						if(res.errCode == 200){
 							layer.alert(res.reason,{title:'提示信息',icon: 1});
 							setTimeout(function(){
@@ -119,10 +129,10 @@ block script
 				,url: 'http://upload.qiniu.com/'
 				,data:qiNiuToken
 				,before: function(obj){
-				  //预读本地文件示例，不支持ie8
-				  obj.preview(function(index, file, result){
-				    $('#demo1').attr('src', result); //图片链接（base64）
-				  });
+					//预读本地文件示例，不支持ie8
+					obj.preview(function(index, file, result){
+					$('#demo1').attr('src', result); //图片链接（base64）
+					});
 				}
 				,done: function(res){
 					//console.log(res);
@@ -133,12 +143,12 @@ block script
 					}
 				}
 				,error: function(){
-				  //演示失败状态，并实现重传
-				  var demoText = $('#demoText');
-				  demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
-				  demoText.find('.demo-reload').on('click', function(){
-				    uploadInst.upload();
-				  });
+					//演示失败状态，并实现重传
+					var demoText = $('#demoText');
+					demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+					demoText.find('.demo-reload').on('click', function(){
+					uploadInst.upload();
+					});
 				}
 			});
 		});

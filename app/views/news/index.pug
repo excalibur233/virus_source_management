@@ -84,7 +84,7 @@ block content
 					td #{data.title}
 					td #{data.writerName}
 					td !{data.type ===2?'<span class="layui-btn layui-btn-sm layui-bg-cyan">自测题</span>':'<span class="layui-btn layui-btn-sm layui-bg-orange">文章</span>'}
-					td !{data.newsClass ===1?'<span class="layui-btn layui-btn-sm layui-bg-red">痛风</span>':(data.newsClass ===2?'<span class="layui-btn layui-btn-sm layui-bg-black">糖尿病</span>':'<span class="layui-btn layui-btn-sm layui-bg-blue">甲状腺</span>')}
+					td !{data.newsClass ===1?'<span class="layui-btn layui-btn-sm layui-bg-red">痛风</span>':(data.newsClass ===2?'<span class="layui-btn layui-btn-sm layui-bg-black">糖尿病</span>':(data.newsClass ===3?'<span class="layui-btn layui-btn-sm layui-bg-blue">甲状腺</span>':'<span class="layui-btn layui-btn-sm layui-bg-primary">自测题</span>'))}
 
 					td #{moment(data.createdAt).format('YYYY-MM-DD HH:mm:ss')}
 					td

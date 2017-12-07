@@ -71,7 +71,7 @@ exports.index = (req, res, next) => {
       if (keywords) {
         condition.keywords = keywords;
       }
-      const datas = await qryNewsList(page, 5/* constants.NEWS_PAGE_LIMIT */, condition);
+      const datas = await qryNewsList(page, /* 5 */constants.NEWS_PAGE_LIMIT, condition);
       datas.titles = '文章列表';
       // console.log(datas);
       res.render('news/index', datas);
@@ -139,7 +139,8 @@ exports.edit = (req, res, next) => {
       const newsInfo = await Model.News.findOne({ where: { newsId } });
       // console.log(newsInfo.dataValues);
       if (!newsInfo.dataValues) {
-        throw new Error('文章不存在！');
+        // throw new Error('文章不存在！');
+        res.send('文章不存在！');
       }
       newsInfo.dataValues.titles = '编辑文章';
       res.render('news/edit', newsInfo.dataValues);
@@ -166,7 +167,7 @@ exports.saveData = (req, res) => {
   const newsId = req.body.newsId || 0;
   const httpUtil = new HttpUtil(req, res);
 
-  if (!newsClass || !title || !writerName || !introduction || !context || !imgUrl || !type) {
+  if (!newsClass || !title || !writerName || !introduction /* || !context || !imgUrl */ || !type) {
     httpUtil.sendJson(constants.HTTP_FAIL, '参数错误');
     return;
   }
@@ -183,13 +184,16 @@ exports.saveData = (req, res) => {
           imgUrl,
           context,
         }, { where: { newsId } });
-
+        // console.log(11);
+        // console.log(affectedRow);
         if (affectedRow[0] === 1) {
-          await redisClient.hsetAsync(
+          // console.log(12);
+          redisClient.hsetAsync(
             redisUtil.getRedisPrefix(11),
             newsId,
             JSON.stringify({ name: title, cat: newsClass }),
           );
+          // console.log(22);
           httpUtil.sendJson(constants.HTTP_SUCCESS, '更新成功', {
             newsInfo: {
               newsId,
@@ -245,75 +249,6 @@ exports.saveData = (req, res) => {
   };
   mainFunction();
 };
-
-// 编辑/新增自测题 （ 目前自测题没用）
-// exports.editTests = (req, res) => {
-//   const newsId = req.body.newsId || 0;
-//   const testId = req.body.testId || 0;
-//   const question = req.body.question || '';
-//   const order = req.body.order || '';
-//   const imgUrl = req.body.imgUrl || '';
-//   const options = req.body.options || '';
-//   const scores = req.body.scores || '';
-//   const type = req.body.type || 0;
-//   const httpUtil = new HttpUtil(req, res);
-//
-//   if (!newsId || !question || !order || !imgUrl || !options || !scores || !type) {
-//     httpUtil.sendJson(constants.HTTP_FAIL, '参数错误');
-//     return;
-//   }
-//
-//   const mainFunction = async () => {
-//     try {
-//       // 新增/编辑自测题
-//       if (testId) {
-//         const affectedRow = await Model.SelfTest.update({
-//           order,
-//           type,
-//           imgUrl,
-//           question,
-//           options,
-//           scores,
-//         }, { where: { testId, newsId } });
-//         if (affectedRow !== 1) {
-//           httpUtil.sendJson(constants.HTTP_FAIL, '更新失败');
-//         } else {
-//           httpUtil.sendJson(constants.HTTP_SUCCESS, '新增成功', {
-//             testInfo: {
-//               order,
-//               type,
-//               imgUrl,
-//               question,
-//               options,
-//               scores,
-//               testId,
-//               newsId,
-//             },
-//           });
-//         }
-//       } else {
-//         const selfTestInfo = await Model.SelfTest.create({
-//           newsId,
-//           order,
-//           type,
-//           imgUrl,
-//           question,
-//           options,
-//           scores,
-//         });
-//         if (!selfTestInfo.dataValues || !selfTestInfo.dataValues.testId) {
-//           httpUtil.sendJson(constants.HTTP_FAIL, '新增失败');
-//         } else {
-//           httpUtil.sendJson(constants.HTTP_SUCCESS, '新增成功', { testInfo: selfTestInfo.dataValues });
-//         }
-//       }
-//     } catch (err) {
-//       logger.info(err);
-//       httpUtil.sendJson(constants.HTTP_FAIL, '系统错误');
-//     }
-//   };
-//   mainFunction();
-// };
 
 // 删除新闻
 exports.delNews = (req, res) => {

@@ -10,7 +10,7 @@ router.get('/logout', authController.logout);
 router.post('/register', authController.isLogin, authController.isSuperManager, authController.register);
 
 // 获取七牛云上传token的接口
-router.get('/qiNiuToken', /*authController.isLogin, */authController.getQiNiuToken);
+router.get('/qiNiuToken', /* authController.isLogin, */authController.getQiNiuToken);
 
 module.exports = function (app) {
   app.use(prefix, router);

@@ -34,29 +34,42 @@ html
 							a(href="/index")
 								i.layui-icon &#xe735; 
 								span 积分设置
+						li#bar3.layui-nav-item
+							a(href="/test")
+								i.layui-icon &#xe6b2;
+								span 自测题
+						li#bar4.layui-nav-item
+							a(href="/estimate")
+								i.layui-icon &#xe62e;
+								span 自测评估
 			.layui-body
 				block content
 			script(src="/layui/layui.js",type="text/javascript")
 			script(type="text/javascript").
 				var message;
 				layui.config({
-				    base: '/build/js/'
+					base: '/build/js/'
 				}).use(['app', 'message'], function() {
-				    var app = layui.app,
-				        $ = layui.jquery,
-				        layer = layui.layer;
-				    //将message设置为全局以便子页面调用
-				    message = layui.message;
-				    //主入口
-				    app.set({
-				        type: 'iframe'
-				    }).init();
-				    //console.log(location.href.indexOf('news'));
-				    //$('#navbar li').removeClass('layui-nav-item-active');
-				    if(location.href.indexOf('news') !== -1){				    	
-				    	$('#bar1').addClass('layui-nav-item-active');
-				    }else{
+					var app = layui.app,
+					$ = layui.jquery,
+					layer = layui.layer;
+					//将message设置为全局以便子页面调用
+					message = layui.message;
+					//主入口
+					app.set({
+						type: 'iframe'
+					}).init();
+					//console.log(location.href.indexOf('news'));
+					//$('#navbar li').removeClass('layui-nav-item-active');
+					if(location.href.indexOf('/news') !== -1){
+						$('#bar1').addClass('layui-nav-item-active');
+					}else if(location.href.indexOf('/test') !== -1){
+						$('#bar3').addClass('layui-nav-item-active');
+					}else if(location.href.indexOf('/estimate') !== -1){
+						$('#bar4').addClass('layui-nav-item-active');
+					}else{
 						$('#bar2').addClass('layui-nav-item-active');
-				    }
+					}
 				});
 			block script
+block more-content
