@@ -12,6 +12,7 @@ const sequelize = new Sequelize(
     host: config.mysqlConfig.host,
     port: config.mysqlConfig.port,
     timezone: process.env.TZ || 'PRC', // 设置时区
+    operatorsAliases: false,
   },
 );
 
