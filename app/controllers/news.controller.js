@@ -225,7 +225,7 @@ exports.saveData = (req, res) => {
           // 加入资讯缩略信息，供排行榜等显示的时候查询
           const timestamp = `0.${new Date().getTime()}`;
           const rankKey = redisUtil.getRedisPrefix(2);
-          const rankTypeKey = redisUtil.getRedisPrefix(2, type);
+          const rankTypeKey = redisUtil.getRedisPrefix(2, newsClass);
           const briefKey = redisUtil.getRedisPrefix(11);
           await redisClient.multi()
             .zadd(rankKey, timestamp, newsInfo.dataValues.newsId)
@@ -261,10 +261,10 @@ exports.delNews = (req, res) => {
       // console.log(newsInfo);
       if (newsInfo && newsInfo.dataValues) {
         const type = parseInt(newsInfo.dataValues.type, 0);
-
+        const newsClass = parseInt(newsInfo.dataValues.newsClass, 0);
         // 删除热门排行榜和热门分类排行榜
         const rankKey = redisUtil.getRedisPrefix(2);
-        const rankTypeKey = redisUtil.getRedisPrefix(2, type);
+        const rankTypeKey = redisUtil.getRedisPrefix(2, newsClass);
 
         if (type === 1) {
           // 普通资讯文章
