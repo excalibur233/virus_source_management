@@ -62,7 +62,7 @@ exports.login = (req, res) => {
   }
 
   password = crypto.createHash('md5').update(password).digest('hex');
-  //console.log(password);
+  // console.log(password);
   Model.Manager.findOne({ where: { account } }).then((managerInfo) => {
     if (!managerInfo.dataValues || password !== managerInfo.dataValues.password) {
       httpUtil.sendJson(constants.HTTP_FAIL, '账户或者密码错误');
@@ -71,25 +71,24 @@ exports.login = (req, res) => {
 
     req.session.manager = {
       managerId: managerInfo.dataValues.managerId,
-      account:managerInfo.dataValues.account,
+      account: managerInfo.dataValues.account,
       type: managerInfo.dataValues.type,
     };
 
-    httpUtil.sendJson(constants.HTTP_SUCCESS, '登入成功','/news');
-    return;
-    //res.redirect(`${config.serverConfig.serverHost}:${config.serverConfig.serverPort}/index`);
+    httpUtil.sendJson(constants.HTTP_SUCCESS, '登入成功', '/news');
+
+    // res.redirect(`${config.serverConfig.serverHost}:${config.serverConfig.serverPort}/index`);
   }).catch((err) => {
-    //logger.info(err);
-    //console.log(err);
+    logger.info(err);
+    // console.log(err);
     httpUtil.sendJson(constants.HTTP_FAIL, '系统错误');
-    return ;
   });
 };
 
-exports.logout = (req,res)=>{
+exports.logout = (req, res) => {
   req.session.manager = {};
   res.redirect('/');
-}
+};
 // 请求注册
 exports.register = (req, res) => {
   const account = req.body.account || '';
@@ -124,7 +123,7 @@ exports.getQiNiuToken = (req, res) => {
   };
   const putPolicy = new qiniu.rs.PutPolicy(options);
   const uploadToken = putPolicy.uploadToken(mac);
-  //console.log(req.body);
+  // console.log(req.body);
   res.end(uploadToken);
 };
 

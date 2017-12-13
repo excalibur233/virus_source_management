@@ -17,7 +17,7 @@ module.exports = {
   redisConfig: {
     host: 'r-2zebafe77a6fd114.redis.rds.aliyuncs.com',
     port: '6379',
-    db: 1,
+    db: 11,
     password: 'xuLU5900',
     ttl: 1800,
     logErrors: true,
