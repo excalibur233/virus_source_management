@@ -1,64 +1,41 @@
-module.exports = function (sequenlize, dataType) {
-  const record = sequenlize.define('selfTestRecord', {
+module.exports = function (sequelize, DataTypes) {
+  const SelfTestRecord = sequelize.define('SelfTestRecord', {
+    // 主键
     recordId: {
-      type: dataType.BIGINT,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true,
+      type: DataTypes.BIGINT, allowNull: false, primaryKey: true, autoIncrement: true,
     },
-    userId: {
-      type: dataType.BIGINT,
-      allowNull: false,
-    },
-    userName: {
-      type: dataType.STRING,
-      allowNull: false,
-    },
-    headImg: {
-      type: dataType.STRING,
-      allowNull: false,
-    },
-    totalScore: {
-      type: dataType.INTEGER,
-      defaultValue: 0,
-    },
-    estimateId: {
-      type: dataType.BIGINT,
-      allowNull: false,
-      defaultValue: 0,
-    },
-    estimate: {
-      type: dataType.TEXT,
-    },
-    newsId: {
-      type: dataType.BIGINT,
-      allowNum: false,
-    },
-    title: {
-      type: dataType.STRING,
-      allowNum: false,
-    },
-    newsClass: {
-      type: dataType.INTEGER,
-      defaultValue: 0,
-    },
-    createdAt: {
-      type: dataType.DATE,
-    },
-    updatedAt: {
-      type: dataType.DATE,
-    },
-    deletedAt: {
-      type: dataType.DATE,
-    },
+    // 用户信息
+    userId: { type: DataTypes.STRING, allowNull: false },
+    userName: { type: DataTypes.STRING },
+    headImg: { type: DataTypes.STRING },
 
+    // 分数
+    totalScore: { type: DataTypes.INTEGER, allowNull: false },
+
+    // 评价id
+    estimateId: { type: DataTypes.BIGINT },
+    // 评价内容
+    estimate: { type: DataTypes.TEXT },
+
+    // 自测题id
+    newsId: { type: DataTypes.BIGINT, allowNull: false },
+    // 自测题标题
+    title: { type: DataTypes.STRING },
+    // 自测题所属类别id
+    newsClass: { type: DataTypes.INTEGER, allowNull: false },
   }, {
-    timestamps: false,
+    timestamps: true,
     paranoid: true,
     freezeTableName: true,
     tableName: 'self_test_record',
     charset: 'utf8',
     collate: 'utf8_general_ci',
   });
-  return record;
+
+  SelfTestRecord.associate = (models) => {
+    SelfTestRecord.belongsTo(models.News, { foreignKey: 'newsId', targetKey: 'newsId' });
+    SelfTestRecord.belongsTo(models.User, { foreignKey: 'userId', targetKey: 'userId' });
+  };
+
+  return SelfTestRecord;
 };
