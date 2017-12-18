@@ -10,7 +10,8 @@
     "import/no-unresolved": "off",
     "no-console": "off",
     "no-new": "off",
-    "func-names": "off"
+    "func-names": "off",
+    "linebreak-style": 0
   },
   "globals": {
     "Vue": true

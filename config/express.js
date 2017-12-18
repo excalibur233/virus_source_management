@@ -42,6 +42,8 @@ module.exports = function () {
   require('../app/routes/ueditor.route')(app);
   require('../app/routes/test.route')(app);
   require('../app/routes/estimate.route')(app);
+  require('../app/routes/advice.route')(app);
+  require('../app/routes/commission.route')(app);
 
   // catch the 404 and render the 404 page.
   app.use((req, res) => {

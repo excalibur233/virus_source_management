@@ -1,3 +1,4 @@
+const constants = require('../../config/constants');
 module.exports = function (sequelize, DataTypes) {
   const News = sequelize.define('News', {
     // id
@@ -7,9 +8,9 @@ module.exports = function (sequelize, DataTypes) {
     // 作者名称
     writerName: { type: DataTypes.STRING, defaultValue: '管理员' },
     // 资讯类型 自测题/文章
-    type: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
+    type: { type: DataTypes.INTEGER, allowNull: false, defaultValue: constants.TYPE_NEWS },
     // 资讯所属类别 (eg. 糖尿病、痛风等)
-    newsClass: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
+    newsClass: { type: DataTypes.INTEGER, allowNull: false },
     // 资讯标题
     title: { type: DataTypes.STRING },
     // 资讯简介
