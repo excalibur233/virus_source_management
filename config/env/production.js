@@ -9,9 +9,9 @@ module.exports = {
   mysqlConfig: {
     host: 'rm-2ze62b8v9ox9m35k7.mysql.rds.aliyuncs.com',
     port: 3306,
-    database: 'virus_source',
-    username: 'virus_source',
-    password: 'virus_source_123$%^',
+    database: 't_virus_source',
+    username: 't_virus_source',
+    password: 'test_123',
   },
   // redis config
   redisConfig: {
