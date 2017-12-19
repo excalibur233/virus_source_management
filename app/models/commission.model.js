@@ -11,12 +11,12 @@ module.exports = function (sequelize, DataTypes) {
     // 操作状态   0: 待处理  1: 已完成
     operatorResult: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
     // 本次变动金额
-    changeNum: { type: DataTypes.FLOAT, allowNull: false },
+    changeNum: { type: DataTypes.FLOAT(11, 2), allowNull: false },
     // 当前佣金总额
-    totalCommission: { type: DataTypes.FLOAT, allowNull: false },
+    totalCommission: { type: DataTypes.FLOAT(11, 2), allowNull: false },
 
     // 传播引流（购买）用户的id
-    viewerId: { type: DataTypes.STRING },
+    viewerId: { type: DataTypes.STRING, allowNull: false },
     // 成交订单编号
     orderId: { type: DataTypes.STRING, unique: true },
 
@@ -30,13 +30,14 @@ module.exports = function (sequelize, DataTypes) {
     timestamps: true,
     paranoid: true,
     freezeTableName: true,
-    tableName: 'commission',
+    tableName: 'commission_log',
     charset: 'utf8',
     collate: 'utf8_general_ci',
   });
 
   Commission.associate = (models) => {
     Commission.belongsTo(models.User, { as: 'Share', foreignKey: 'shareId', targetKey: 'userId' });
+    Commission.belongsTo(models.User, { as: 'Viewer', foreignKey: 'viewerId', targetKey: 'userId' });
   };
 
   return Commission;

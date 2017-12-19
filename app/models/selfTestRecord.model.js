@@ -9,6 +9,9 @@ module.exports = function (sequelize, DataTypes) {
     userName: { type: DataTypes.STRING },
     headImg: { type: DataTypes.STRING },
 
+    // 用户选项
+    options: { type: DataTypes.STRING, allowNull: false },
+
     // 分数
     totalScore: { type: DataTypes.INTEGER, allowNull: false },
 
@@ -27,7 +30,7 @@ module.exports = function (sequelize, DataTypes) {
     timestamps: true,
     paranoid: true,
     freezeTableName: true,
-    tableName: 'self_test_record',
+    tableName: 'self_test_log',
     charset: 'utf8',
     collate: 'utf8_general_ci',
   });
