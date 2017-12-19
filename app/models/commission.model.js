@@ -30,7 +30,7 @@ module.exports = function (sequelize, DataTypes) {
     timestamps: true,
     paranoid: true,
     freezeTableName: true,
-    tableName: 'commission',
+    tableName: 'commission_log',
     charset: 'utf8',
     collate: 'utf8_general_ci',
   });
