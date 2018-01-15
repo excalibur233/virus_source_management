@@ -10,6 +10,7 @@ module.exports = function (sequelize, DataTypes) {
     title: { type: DataTypes.STRING },
     introduction: { type: DataTypes.STRING },
     writerName: { type: DataTypes.STRING, defaultValue: '管理员' },
+    writerId: { type: DataTypes.STRING },
 
     // 资讯浏览人详细信息
     viewerId: { type: DataTypes.STRING, allowNull: false },

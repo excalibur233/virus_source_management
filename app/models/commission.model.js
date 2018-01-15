@@ -6,7 +6,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     // 分享（获利）用户id
     shareId: { type: DataTypes.STRING, allowNull: false },
-    // 操作编号   1：成交订单获利 2：提现 3：积分兑换 4.订单取消，取消返利
+    // 操作编号   1：成交订单获利 2：提现  3.订单取消，取消返利
     operator: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
     // 操作状态   0: 待处理  1: 已完成
     operatorResult: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
