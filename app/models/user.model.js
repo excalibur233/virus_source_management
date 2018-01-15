@@ -21,7 +21,7 @@ module.exports = function (sequelize, DataTypes) {
     // 就职医院
     hospitalName: { type: DataTypes.STRING },
     // 职称
-    jobTitleId: { type: DataTypes.INTEGER },
+    jobTitleId: { type: DataTypes.BIGINT },
   }, {
     timestamps: true,
     paranoid: true,
