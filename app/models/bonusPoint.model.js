@@ -10,7 +10,9 @@ module.exports = function (sequelize, DataTypes) {
     // 操作人对应增加积分
     pointNum: { type: DataTypes.FLOAT, allowNull: false, defaultValue: 0 },
     // 分享人对应增加积分
-    otherPointNum: { type: DataTypes.FLOAT, allowNull: false, defaultValue: 0 },
+    sharePointNum: { type: DataTypes.FLOAT, allowNull: false, defaultValue: 0 },
+    // 原创作者对应增加积分
+    writerPointNum: { type: DataTypes.FLOAT, allowNull: false, defaultValue: 0 },
   }, {
     timestamps: false,
     paranoid: false,
