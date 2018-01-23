@@ -5,7 +5,7 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.BIGINT, allowNull: false, primaryKey: true, autoIncrement: true,
     },
     // 职称
-    title: { type: DataTypes.INTEGER },
+    title: { type: DataTypes.STRING },
   }, {
     timestamps: true,
     paranoid: true,
