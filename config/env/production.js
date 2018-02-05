@@ -30,4 +30,8 @@ module.exports = {
     bucket: 'med-share',
     showLink: 'http://p025heou9.bkt.clouddn.com',
   },
+	wxConfig:{
+		AppID:'wx0ad6f23cad3621f8',
+		AppSecret:'0ab4b826da07608e4b54299af36c23c0'
+	}
 };

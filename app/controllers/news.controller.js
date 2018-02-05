@@ -4,6 +4,7 @@ const Model = require('../models/index');
 const redisClient = require('../../config/redis')();
 const redisUtil = require('../utils/redis.util');
 const logger = require('../utils/log.util').getLogger('errLogger');
+const Sequelize = require('sequelize');
 
 const qryNewsList = async (page = 1, limit = constants.NEWS_PAGE_LIMIT, condition = {}) => {
   const rtnList = {
@@ -16,24 +17,30 @@ const qryNewsList = async (page = 1, limit = constants.NEWS_PAGE_LIMIT, conditio
 
   try {
     const conditions = {
-      attributes: ['newsId', 'writerName', 'type', 'newsClass', 'title', 'introduction', 'createdAt'],
+      attributes: ['newsId', 'type', 'newsClass', 'title', 'introduction', 'createdAt'],
       offset: (page - 1) * limit,
       limit,
       order: [['createdAt', 'DESC']],
       where: {},
+		include:[{
+		model:Model.User,
+		attributes:['userName']
+		}]
     };
 
     // console.log(condition);
-
+	if (condition.keywords) {
+		conditions.where.title = {
+			[Sequelize.Op.like]: `%${condition.keywords}%`
+		}
+	}
     if (condition.newsClass) {
       conditions.where.newsClass = condition.newsClass;
     }
     if (condition.type) {
       conditions.where.type = condition.type;
     }
-    if (condition.keywords) {
-      conditions.where.$or = { title: { $like: `%${condition.keywords}%` }, writerName: { $like: `%${condition.keywords}%` } };
-    }
+
 
     // console.log(conditions);
     const newsList = await Model.News.findAndCountAll(conditions);
@@ -128,28 +135,36 @@ exports.add = (req, res) => {
 
 // 查询文章的详细信息
 exports.edit = (req, res, next) => {
-  const newsId = req.params.newsId || 0;
+	const newsId = req.params.newsId || 0;
 
-  if (!newsId) {
-    res.render('news/edit', {});
-    return;
-  }
-  const mainFunction = async () => {
-    try {
-      const newsInfo = await Model.News.findOne({ where: { newsId } });
-      // console.log(newsInfo.dataValues);
-      if (!newsInfo.dataValues) {
-        // throw new Error('文章不存在！');
-        res.send('文章不存在！');
-      }
-      newsInfo.dataValues.titles = '编辑文章';
-      res.render('news/edit', newsInfo.dataValues);
-    } catch (err) {
-      logger.info(err);
-      next(err);
-    }
-  };
-  mainFunction();
+	(async () => {
+		let result ={};
+		// 作者列表
+		const users = await Model.User.findAll({ attributes:['userId','userName']});
+		console.log(users);
+		result.users =  users;
+		result.title =  '添加文章';
+
+		if (!newsId) {
+			res.render('news/edit', result);
+			return;
+		}
+		try {
+			// 文章详情
+			const newsInfo = await Model.News.findOne({ where: { newsId } });
+			// console.log(newsInfo.dataValues);
+			if (!newsInfo.dataValues) {
+				// throw new Error('文章不存在！');
+				res.send('文章不存在！');
+			}
+			result= newsInfo.dataValues;
+			result.title =  '编辑文章';
+			res.render('news/edit', result);
+		} catch (err) {
+			logger.info(err);
+			next(err);
+		}
+	})()
 };
 
 
@@ -159,7 +174,7 @@ exports.saveData = (req, res) => {
   const newsClass = req.body.newsClass || 0;
   const type = req.body.type || 0;
   const title = req.body.title || '';
-  const writerName = req.body.writerName || '';
+  const writerId = req.body.writerId || '';
   const introduction = req.body.introduction || '';
   const imgUrl = req.body.imgUrl || '';
   const context = req.body.context || '';
@@ -167,8 +182,8 @@ exports.saveData = (req, res) => {
   const newsId = req.body.newsId || 0;
   const httpUtil = new HttpUtil(req, res);
 
-  if (!newsClass || !title || !writerName || !introduction /* || !context || !imgUrl */ || !type) {
-    httpUtil.sendJson(constants.HTTP_FAIL, '参数错误');
+  if (!newsClass || !title || !introduction /* || !context || !imgUrl */ || !type) {
+    httpUtil.sendJson(constants.HTTP_FAIL, '请填写完整信息');
     return;
   }
 
@@ -176,7 +191,7 @@ exports.saveData = (req, res) => {
     try {
       if (newsId) {
         const affectedRow = await Model.News.update({
-          writerName,
+          writerId,
           type,
           newsClass,
           title,
@@ -194,24 +209,13 @@ exports.saveData = (req, res) => {
             JSON.stringify({ name: title, cat: newsClass }),
           );
           // console.log(22);
-          httpUtil.sendJson(constants.HTTP_SUCCESS, '更新成功', {
-            newsInfo: {
-              newsId,
-              writerName,
-              type,
-              newsClass,
-              title,
-              introduction,
-              imgUrl,
-              context,
-            },
-          });
+          httpUtil.sendJson(constants.HTTP_SUCCESS, '更新成功');
         } else {
           httpUtil.sendJson(constants.HTTP_FAIL, '更新失败');
         }
       } else {
         const newsInfo = await Model.News.create({
-          writerName,
+          writerId,
           type,
           newsClass,
           title,

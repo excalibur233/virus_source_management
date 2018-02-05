@@ -5,8 +5,8 @@ module.exports = function (sequelize, DataTypes) {
     newsId: {
       type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true, unique: true,
     },
-    // 作者名称
-    writerName: { type: DataTypes.STRING, defaultValue: '管理员' },
+    // 作者id
+    writerId: { type: DataTypes.STRING, defaultValue: '管理员' },
     // 资讯类型 自测题/文章
     type: { type: DataTypes.INTEGER, allowNull: false, defaultValue: constants.TYPE_NEWS },
     // 资讯所属类别 (eg. 糖尿病、痛风等)
@@ -27,6 +27,6 @@ module.exports = function (sequelize, DataTypes) {
     charset: 'utf8',
     collate: 'utf8_general_ci',
   });
-
+	News.associate = (models) => { News.belongsTo(models.User, { foreignKey: 'writerId', targetKey: 'userId' }); };
   return News;
 };
