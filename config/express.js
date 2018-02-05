@@ -28,7 +28,7 @@ module.exports = function () {
   app.use(session({
     saveUninitialized: true,
     resave: true,
-    secret: config.serverConfig.sessionSecret,
+    secret: config.serverConfig.sessionSecret
   }));
   // app.use(csurf({ cookie: true }));
 

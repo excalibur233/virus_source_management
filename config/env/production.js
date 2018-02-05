@@ -1,17 +1,17 @@
 module.exports = {
   // server config
   serverConfig: {
-    serverPort: 8081,
-    serverHost: 'http://share.medsci-tech.com',
+    serverPort: 8082,
+    serverHost: 'http://test-share.medsci-tech.com',
     sessionSecret: 'xsm_production_secret',
   },
   // mysql config
   mysqlConfig: {
     host: 'rm-2ze62b8v9ox9m35k7.mysql.rds.aliyuncs.com',
     port: 3306,
-    database: 'virus_source',
-    username: 'virus_source',
-    password: 'virus_source_123$%^',
+    database: 't_virus_source',
+    username: 't_virus_source',
+    password: 'test_123',
   },
   // redis config
   redisConfig: {
@@ -30,4 +30,8 @@ module.exports = {
     bucket: 'med-share',
     showLink: 'http://p025heou9.bkt.clouddn.com',
   },
+	wxConfig:{
+		AppID:'wx0ad6f23cad3621f8',
+		AppSecret:'0ab4b826da07608e4b54299af36c23c0'
+	}
 };

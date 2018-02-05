@@ -8,6 +8,7 @@ module.exports = function (sequelize, DataTypes) {
     // 文章作者id （如果是管理员后台编辑的文章，这里为空）
     writerId: { type: DataTypes.STRING },
     // 资讯类型 1.官方资讯；2.官方自测题；3.个人资讯;
+
     type: { type: DataTypes.INTEGER, allowNull: false, defaultValue: constants.TYPE_NEWS },
     // 资讯所属类别 (eg. 糖尿病、痛风等)
     newsClass: { type: DataTypes.INTEGER, allowNull: false },
@@ -32,5 +33,4 @@ module.exports = function (sequelize, DataTypes) {
     News.belongsTo(models.User, { as: 'Writer', foreignKey: 'writerId', targetKey: 'userId' });
   };
 
-  return News;
 };
