@@ -33,4 +33,5 @@ module.exports = function (sequelize, DataTypes) {
     News.belongsTo(models.User, { as: 'Writer', foreignKey: 'writerId', targetKey: 'userId' });
   };
 
+  return News;
 };

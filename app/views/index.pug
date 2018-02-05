@@ -13,7 +13,11 @@ block content
                 .layui-inline
                     label.layui-form-label(style='width:120px;') 分享人增加积分：
                     .layui-input-inline
-                        input.layui-input(type="number",value=item.dataValues.otherPointNum,name="othetPointNum_" + item.dataValues.id,data-id = item.dataValues.id)
+                        input.layui-input(type="number",value=item.dataValues.sharePointNum,name="sharePointNum_" + item.dataValues.id,data-id = item.dataValues.id)
+                .layui-inline
+                    label.layui-form-label(style='width:120px;') 作者增加积分：
+                    .layui-input-inline
+                        input.layui-input(type="number",value=item.dataValues.writerPointNum,name="writerPointNum_" + item.dataValues.id,data-id = item.dataValues.id)
 
         .layui-form-item
             .layui-input-block
